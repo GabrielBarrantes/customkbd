@@ -1,0 +1,19 @@
+cd build
+sudo ./src/customkbd-daemon
+
+# List connected keyboards
+sudo ./src/customkbd list
+
+# Select one by index (writes to configs/device.conf)
+sudo ./src/customkbd select <index>
+
+# Check status
+sudo ./src/customkbd status
+
+
+#####
+sudo mount --bind $(pwd)/configs /etc/customkbd
+sudo umount /etc/customkbd
+
+# Run daemon normally
+sudo ./src/customkbd-daemon

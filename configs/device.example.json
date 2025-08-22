@@ -1,0 +1,11 @@
+{
+"by_id_basename": "usb-Logitech_USB_Keyboard-event-kbd",
+"name": "Logitech USB Keyboard",
+"phys": "usb-0000:00:14.0-1/input0",
+"uniq": "1234ABCD",
+"bus": 3,
+"vendor": 1133,
+"product": 50475,
+"id_path": "pci-0000:00:14.0-usb-0:1:1.0",
+"id_serial": "Logitech_USB_Keyboard_1234ABCD"
+}

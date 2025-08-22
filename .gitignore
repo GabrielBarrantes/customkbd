@@ -1,0 +1,49 @@
+# Build artifacts
+/build/
+/out/
+/bin/
+/lib/
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/*.cmake
+
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Executables
+customkbd
+customkbd-daemon
+*.exe
+*.out
+*.app
+
+# Logs
+*.log
+
+# Temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+*.old
+*~
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# CLion / JetBrains
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

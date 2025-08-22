@@ -12,7 +12,6 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBUDEV REQUIRED libudev)
 pkg_check_modules(LIBEVDEV REQUIRED libevdev)
 
-# nlohmann/json (header-only)
 include(FetchContent)
 FetchContent_Declare(
     nlohmann_json
@@ -24,10 +23,9 @@ FetchContent_MakeAvailable(nlohmann_json)
 add_library(customkbd_core
     src/customkbd/Config.cpp
     src/customkbd/DeviceMatcher.cpp
+    src/customkbd/InputDeviceInfo.cpp
     src/customkbd/InputDaemon.cpp
-    src/customkbd/Keymap.cpp
     src/customkbd/Logger.cpp
-    src/customkbd/UInput.cpp
 )
 
 target_include_directories(customkbd_core
@@ -56,8 +54,9 @@ foreach(tgt IN ITEMS customkbd-daemon customkbd)
     target_include_directories(${tgt} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 endforeach()
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+
 install(TARGETS customkbd-daemon customkbd RUNTIME DESTINATION bin)
 install(FILES systemd/customkbd.service DESTINATION lib/systemd/system)
-install(FILES configs/mappings.example.json DESTINATION etc/customkbd RENAME mappings.json)
-install(FILES configs/device.example.json DESTINATION etc/customkbd RENAME device.json)
+install(FILES configs/mappings.json DESTINATION etc/customkbd RENAME mappings.json)
 install(FILES README.md DESTINATION share/doc/customkbd)

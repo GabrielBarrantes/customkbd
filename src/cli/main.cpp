@@ -5,8 +5,13 @@
 #include <vector>
 #include "../customkbd/DeviceMatcher.hpp"
 #include <nlohmann/json.hpp>
+#include "../customkbd/InputDeviceInfo.hpp"
 
-const std::string DEVICE_JSON = "../configs/device.json";
+#ifdef DEBUG
+const std::string DEVICE_JSON = "configs/device.json";
+#else
+const std::string DEVICE_JSON = "/usr/local/etc/customkbd/device.json";
+#endif
 
 int main(int argc, char **argv)
 {
@@ -18,15 +23,16 @@ int main(int argc, char **argv)
 
     std::string cmd = argv[1];
 
-    DeviceMatcher matcher;
-    auto devices = matcher.listInputDevices();
+    auto devices = DeviceMatcher::listInputDevices();
 
     if (cmd == "list")
     {
         int idx = 0;
         for (const auto &d : devices)
         {
-            std::cout << std::setw(2) << idx++ << ": " << d << std::endl;
+            InputDeviceInfo dev(d);
+
+            std::cout << std::setw(2) << idx++ << ": " << dev.name << std::endl;
         }
         return 0;
     }
@@ -47,9 +53,16 @@ int main(int argc, char **argv)
         }
 
         nlohmann::json j;
-        j["path"] = devices[idx]; // write selected device path in JSON
 
-        const std::string DEVICE_JSON = "../configs/device.json";
+        InputDeviceInfo dev(devices[idx]);
+
+        j["path"] = devices[idx];
+        j["vendor"] = dev.vendor;
+        j["product"] = dev.product;
+        j["version"] = dev.version;
+        j["name"] = dev.name;
+        j["eventNode"] = devices[idx];
+
         std::ofstream out(DEVICE_JSON);
         if (!out.is_open())
         {
@@ -58,9 +71,9 @@ int main(int argc, char **argv)
         }
 
         out << j.dump(2) << std::endl;
-        std::cout << "Selected device: " << devices[idx] << std::endl;
+        std::cout << "Selected device: " << dev.name << std::endl;
 
-        return 0; // stop here, don’t fall through
+        return 0;
     }
 
     if (cmd == "status")
@@ -74,7 +87,7 @@ int main(int argc, char **argv)
 
         nlohmann::json j;
         in >> j;
-        std::cout << "Selected device: " << j["path"].get<std::string>() << std::endl;
+        std::cout << "Selected device: " << j["name"].get<std::string>() << std::endl;
         return 0;
     }
 

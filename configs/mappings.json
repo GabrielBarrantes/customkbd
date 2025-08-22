@@ -1,4 +1,16 @@
 {
-"z": ["ctrl_down", "c", "ctrl_up"],
-"x": ["ctrl_down", "v", "ctrl_up"]
+"shift_left": ["ctrl_left", "c"],
+"ctrl_left": ["ctrl_left", "v"],
+"capslock": ["ctrl_left", "s"],
+"f1": ["ctrl_left", "w"],
+"grave": ["type:git status", "enter"],
+"1": ["type:git checkout "],
+"3": ["type:git add .", "enter"],
+"4": ["type:git commit", "enter"],
+"5": ["type:git commit --amend", "enter"],
+"escape": ["escape"],
+"tab": ["ctrl_left", "z"],
+"z": ["meta_left", "minus"],
+"alt_left": ["meta_left", "equal"],
+"meta_left": ["up", "enter"]
 }

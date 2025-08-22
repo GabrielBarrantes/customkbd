@@ -1,47 +1,70 @@
 # customkbd
 
-A C++17 daemon that remaps a dedicated second keyboard on Linux. It identifies the chosen keyboard robustly (preferring `/dev/input/by-id` symlinks and falling back to a multi-attribute match: name, phys, uniq, bus, vendor, product, ID_PATH, ID_SERIAL). It grabs that device exclusively and forwards keys (optionally injecting mapped combos) to the OS via `uinput`.
+A C++17 daemon that remaps a dedicated second keyboard on Linux. It identifies the chosen keyboard by name. It grabs that device exclusively and forwards keys (optionally injecting mapped combos) to the OS via `uinput`.
 
 ## Build
 
-Dependencies: `libevdev`, `libudev`, CMake >= 3.15, a C++17 compiler.
+### Dependencies
+
+Install `libevdev`, `libudev`, CMake >= 3.15, a C++17 compiler.
 
 ```bash
-sudo apt-get install -y libevdev-dev libudev-dev cmake g++
-mkdir build && cd build
-cmake ..
-make -j
+sudo apt update
+sudo apt install -y libevdev-dev libudev-dev cmake g++
 ```
 
-## Install
+### Build and run development enviroment
+
+Build
 
 ```bash
-sudo make install
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+```
+
+Run
+
+```bash
+sudo ./build/customkbd list
+sudo ./build/customkbd select 1
+sudo ./build/customkbd status
+sudo ./build/customkbd-daemon
+```
+
+### Build and install
+
+```bash
+rm -rf build
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
 sudo systemctl enable customkbd.service
-sudo systemctl start customkbd.service
 ```
 
-## Configure
+## Configuration and Usage
 
-- Select device (only works if >1 keyboard present):
+- Make sure to select a device before starting the service (only works if >1 keyboard present):
 
 ```bash
 sudo customkbd list
 sudo customkbd select 1
 ```
 
-This stores `/etc/customkbd/device.json` with a robust selector snapshot.
-
-- Edit mappings at `/etc/customkbd/mappings.json`:
+- Edit mappings at `/usr/local/etc/customkbd/mappings.json`:
 
 ```json
 {
-  "z": ["z", "ctrl_down", "c", "ctrl_up"],
-  "x": ["x", "ctrl_down", "v", "ctrl_up"]
+  "z": ["ctrl_down", "c", "ctrl_up"],
+  "x": ["ctrl_down", "v", "ctrl_up"]
 }
 ```
 
-> Tip: Use explicit `_down`/`_up` for modifiers when needed.
+- After editing start or restart the service with
+
+```bash
+sudo systemctl start customkbd.service
+sudo systemctl restart customkbd.service
+```
 
 ## Security & Permissions
 
@@ -51,4 +74,4 @@ The daemon needs read access to `/dev/input/event*` and write to `/dev/uinput`. 
 
 - If the previously used keyboard is not present at boot, the daemon idles and does nothing.
 - The CLI only allows selecting a device when more than one keyboard is detected.
-- Matching prefers `/dev/input/by-id` symlink names which stay stable across reboots; when not available, a score-based fallback reduces false matches.
+- For now hot plug detect is not supported, when a new keyboard is plugged, list, select and restart the service.

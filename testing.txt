@@ -1,14 +1,14 @@
 cd build
-sudo ./src/customkbd-daemon
+sudo ./customkbd-daemon
 
 # List connected keyboards
-sudo ./src/customkbd list
+sudo ./customkbd list
 
 # Select one by index (writes to configs/device.conf)
-sudo ./src/customkbd select <index>
+sudo ./customkbd select <index>
 
 # Check status
-sudo ./src/customkbd status
+sudo ./customkbd status
 
 
 #####

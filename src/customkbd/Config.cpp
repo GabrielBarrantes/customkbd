@@ -1,0 +1,65 @@
+#include "Config.hpp"
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iostream>
+
+using json = nlohmann::json;
+
+// Helper: convert DeviceSelector to JSON
+static json selector_to_json(const DeviceSelector &s)
+{
+    json j;
+    j["path"] = s.path;
+    return j;
+}
+
+RuntimeConfig Config::load(const ConfigPaths &paths)
+{
+    RuntimeConfig rc;
+
+    // Load selected device
+    {
+        std::ifstream f(paths.device_json);
+        if (!f)
+        {
+            std::cerr << "No device.json found; daemon will idle." << std::endl;
+        }
+        else
+        {
+            json j;
+            f >> j;
+            DeviceSelector sel;
+            sel.path = j.value("path", "");
+            rc.selector = sel;
+        }
+    }
+
+    // Load mappings
+    {
+        std::ifstream f(paths.mappings_json);
+        if (!f)
+        {
+            std::cerr << "No mappings.json found; no remaps will be applied." << std::endl;
+        }
+        else
+        {
+            json j;
+            f >> j;
+            for (auto &[k, v] : j.items())
+            {
+                rc.mappings[k] = v.get<std::vector<std::string>>();
+            }
+        }
+    }
+
+    return rc;
+}
+
+void Config::save_device(const DeviceSelector &sel, const std::string &path)
+{
+    json j = selector_to_json(sel);
+    std::ofstream f(path);
+    if (!f)
+        throw std::runtime_error("Failed to write device selector to " + path);
+    f << j.dump(2) << std::endl;
+}

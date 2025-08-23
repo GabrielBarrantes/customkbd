@@ -20,7 +20,7 @@
 *.dylib
 
 # Executables
-customkbd
+build/customkbd
 customkbd-daemon
 *.exe
 *.out

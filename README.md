@@ -36,8 +36,8 @@ This stores `/etc/customkbd/device.json` with a robust selector snapshot.
 
 ```json
 {
-  "z": ["z", "ctrl_down", "c", "ctrl_up"],
-  "x": ["x", "ctrl_down", "v", "ctrl_up"]
+  "z": ["ctrl_down", "c", "ctrl_up"],
+  "x": ["ctrl_down", "v", "ctrl_up"]
 }
 ```
 

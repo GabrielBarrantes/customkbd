@@ -19,6 +19,9 @@
 *.dll
 *.dylib
 
+# Device config
+configs/device.json
+
 # Executables
 build/customkbd
 customkbd-daemon

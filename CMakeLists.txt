@@ -24,6 +24,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 add_library(customkbd_core
     src/customkbd/Config.cpp
     src/customkbd/DeviceMatcher.cpp
+    src/customkbd/InputDeviceInfo.cpp
     src/customkbd/InputDaemon.cpp
     src/customkbd/Keymap.cpp
     src/customkbd/Logger.cpp

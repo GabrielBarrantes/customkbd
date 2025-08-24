@@ -15,4 +15,6 @@ public:
         DeviceMatcher matcher;
         return matcher.listInputDevices();
     }
+
+private:
 };

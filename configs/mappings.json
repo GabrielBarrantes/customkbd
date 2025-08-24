@@ -1,4 +1,12 @@
 {
-"z": ["ctrl_down", "c", "ctrl_up"],
-"x": ["ctrl_down", "v", "ctrl_up"]
+"shift_left": ["ctrl_left", "c"],
+"ctrl_left": ["ctrl_left", "v"],
+"caps_lock": ["ctrl_left", "s"],
+"f1": ["ctrl_left", "w"],
+"grave": ["ctrl_left", "enter"],
+"escape": ["escape"],
+"tab": ["ctrl_left", ""],
+"z": ["ctrl_left", "v"],
+"alt_left": ["meta_left", "minus"],
+"ctrl_left": ["meta_right", "equal"]
 }

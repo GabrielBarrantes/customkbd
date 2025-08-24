@@ -10,19 +10,154 @@
 #include <chrono>
 
 static const std::map<std::string, int> keymap = {
-    {"z", KEY_Z},
-    {"x", KEY_X},
+    // letters
+    {"a", KEY_A},
+    {"b", KEY_B},
     {"c", KEY_C},
+    {"d", KEY_D},
+    {"e", KEY_E},
+    {"f", KEY_F},
+    {"g", KEY_G},
+    {"h", KEY_H},
+    {"i", KEY_I},
+    {"j", KEY_J},
+    {"k", KEY_K},
+    {"l", KEY_L},
+    {"m", KEY_M},
+    {"n", KEY_N},
+    {"o", KEY_O},
+    {"p", KEY_P},
+    {"q", KEY_Q},
+    {"r", KEY_R},
+    {"s", KEY_S},
+    {"t", KEY_T},
+    {"u", KEY_U},
     {"v", KEY_V},
-    {"ctrl_down", KEY_LEFTCTRL},
-    {"ctrl_up", KEY_LEFTCTRL}};
+    {"w", KEY_W},
+    {"x", KEY_X},
+    {"y", KEY_Y},
+    {"z", KEY_Z},
+
+    // numbers
+    {"0", KEY_0},
+    {"1", KEY_1},
+    {"2", KEY_2},
+    {"3", KEY_3},
+    {"4", KEY_4},
+    {"5", KEY_5},
+    {"6", KEY_6},
+    {"7", KEY_7},
+    {"8", KEY_8},
+    {"9", KEY_9},
+
+    // modifiers
+    {"ctrl_left", KEY_LEFTCTRL},
+    {"ctrl_right", KEY_RIGHTCTRL},
+    {"alt_left", KEY_LEFTALT},
+    {"alt_right", KEY_RIGHTALT},
+    {"shift_left", KEY_LEFTSHIFT},
+    {"shift_right", KEY_RIGHTSHIFT},
+    {"meta_left", KEY_LEFTMETA},
+    {"meta_right", KEY_RIGHTMETA},
+
+    {"grave", KEY_GRAVE},
+    {"enter", KEY_ENTER},
+    {"escape", KEY_ESC},
+    {"tab", KEY_TAB},
+    {"minus", KEY_MINUS},
+    {"equal", KEY_EQUAL},
+
+    // function keys
+    {"f1", KEY_F1},
+    {"f2", KEY_F2},
+    {"f3", KEY_F3},
+    {"f4", KEY_F4},
+    {"f5", KEY_F5},
+    {"f6", KEY_F6},
+    {"f7", KEY_F7},
+    {"f8", KEY_F8},
+    {"f9", KEY_F9},
+    {"f10", KEY_F10},
+    {"f11", KEY_F11},
+    {"f12", KEY_F12},
+
+    // escape
+    {"esc", KEY_ESC}};
 
 static const std::map<int, std::string> code_to_name_map = {
-    {KEY_Z, "z"},
-    {KEY_X, "x"},
+    // letters
+    {KEY_A, "a"},
+    {KEY_B, "b"},
     {KEY_C, "c"},
+    {KEY_D, "d"},
+    {KEY_E, "e"},
+    {KEY_F, "f"},
+    {KEY_G, "g"},
+    {KEY_H, "h"},
+    {KEY_I, "i"},
+    {KEY_J, "j"},
+    {KEY_K, "k"},
+    {KEY_L, "l"},
+    {KEY_M, "m"},
+    {KEY_N, "n"},
+    {KEY_O, "o"},
+    {KEY_P, "p"},
+    {KEY_Q, "q"},
+    {KEY_R, "r"},
+    {KEY_S, "s"},
+    {KEY_T, "t"},
+    {KEY_U, "u"},
     {KEY_V, "v"},
-    {KEY_LEFTCTRL, "ctrl"}};
+    {KEY_W, "w"},
+    {KEY_X, "x"},
+    {KEY_Y, "y"},
+    {KEY_Z, "z"},
+
+    // numbers
+    {KEY_0, "0"},
+    {KEY_1, "1"},
+    {KEY_2, "2"},
+    {KEY_3, "3"},
+    {KEY_4, "4"},
+    {KEY_5, "5"},
+    {KEY_6, "6"},
+    {KEY_7, "7"},
+    {KEY_8, "8"},
+    {KEY_9, "9"},
+
+    // modifiers
+    {KEY_LEFTCTRL, "ctrl_left"},
+    {KEY_RIGHTCTRL, "ctrl_right"},
+    {KEY_LEFTALT, "alt_left"},
+    {KEY_RIGHTALT, "alt_right"},
+    {KEY_LEFTSHIFT, "shift_left"},
+    {KEY_RIGHTSHIFT, "shift_right"},
+    {KEY_LEFTMETA, "meta_left"},
+    {KEY_RIGHTMETA, "meta_right"},
+
+    {KEY_GRAVE, "grave"},
+    {KEY_ENTER, "enter"},
+    {KEY_ESC, "escape"},
+    {KEY_TAB, "tab"},
+    {KEY_MINUS, "minus"},
+    {KEY_EQUAL, "equal"},
+
+    // function keys
+    {KEY_F1, "f1"},
+    {KEY_F2, "f2"},
+    {KEY_F3, "f3"},
+    {KEY_F4, "f4"},
+    {KEY_F5, "f5"},
+    {KEY_F6, "f6"},
+    {KEY_F7, "f7"},
+    {KEY_F8, "f8"},
+    {KEY_F9, "f9"},
+    {KEY_F10, "f10"},
+    {KEY_F11, "f11"},
+    {KEY_F12, "f12"},
+
+    // escape
+    {KEY_ESC, "esc"}};
 
 InputDaemon::InputDaemon(const std::string &devicePath_,
                          const std::map<std::string, std::vector<std::string>> &mappings_)
@@ -131,6 +266,7 @@ void InputDaemon::run()
 
         if (ev.value == 1 && !keyName.empty())
         {
+
             auto it_map = mappings.find(keyName);
             if (it_map != mappings.end())
             {
@@ -138,6 +274,8 @@ void InputDaemon::run()
                 emitMapped(it_map->second);
                 continue;
             }
+
+            continue;
         }
 
         std::cout << "[DEBUG] Forwarding Event: " << keyName << std::endl;
@@ -183,60 +321,33 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
         struct input_event ev{};
         ev.type = EV_KEY;
         ev.code = it->second;
-
-        if (a == "ctrl_down")
-        {
-            ev.value = 1;
-            ctrl_pressed = true;
-            std::cout << "[DEBUG] Pressing Ctrl" << std::endl;
-        }
-        else if (a == "ctrl_up")
-        {
-            ev.value = 0;
-            ctrl_pressed = false;
-            std::cout << "[DEBUG] Releasing Ctrl" << std::endl;
-        }
-        else
-        {
-            // press
-            ev.value = 1;
-            write(uinputFd, &ev, sizeof(ev));
-            std::cout << "[DEBUG] Pressing key: " << a << std::endl;
-
-            struct input_event syn{};
-            syn.type = EV_SYN;
-            syn.code = SYN_REPORT;
-            syn.value = 0;
-            write(uinputFd, &syn, sizeof(syn));
-            // std::this_thread::sleep_for(std::chrono::milliseconds(5));
-
-            // release
-            ev.value = 0;
-        }
-
+        ev.value = 1;
         write(uinputFd, &ev, sizeof(ev));
-
-        struct input_event syn{};
-        syn.type = EV_SYN;
-        syn.code = SYN_REPORT;
-        syn.value = 0;
-        write(uinputFd, &syn, sizeof(syn));
+        std::cout << "[DEBUG] Pressing key: " << a << std::endl;
         // std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
-    if (ctrl_pressed)
+    struct input_event syn{};
+    syn.type = EV_SYN;
+    syn.code = SYN_REPORT;
+    syn.value = 0;
+    write(uinputFd, &syn, sizeof(syn));
+
+    for (const auto &a : actions)
     {
+        auto it = keymap.find(a);
+        if (it == keymap.end())
+        {
+            std::cout << "[WARN] Unknown mapping action: " << a << std::endl;
+            continue;
+        }
+
         struct input_event ev{};
         ev.type = EV_KEY;
-        ev.code = keymap.at("ctrl_down");
+        ev.code = it->second;
         ev.value = 0;
         write(uinputFd, &ev, sizeof(ev));
-
-        struct input_event syn{};
-        syn.type = EV_SYN;
-        syn.code = SYN_REPORT;
-        syn.value = 0;
-        write(uinputFd, &syn, sizeof(syn));
-        std::cout << "[DEBUG] Ctrl released at end" << std::endl;
+        std::cout << "[DEBUG] Releasing key: " << a << std::endl;
+        // std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }

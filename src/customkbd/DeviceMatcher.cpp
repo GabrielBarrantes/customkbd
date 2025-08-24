@@ -114,3 +114,66 @@ std::vector<std::string> DeviceMatcher::listInputDevices() const
 
     return devices;
 }
+
+std::string DeviceMatcher::eventnode(std::string const &name)
+{
+    std::ifstream infile("/proc/bus/input/devices");
+    if (!infile.is_open())
+    {
+        return {};
+    }
+
+    std::string line;
+    std::string currentName;
+    std::string currentEvent;
+
+    while (std::getline(infile, line))
+    {
+        if (line.rfind("N:", 0) == 0)
+        {
+            // Parse Name
+            auto pos = line.find("Name=");
+            if (pos != std::string::npos)
+            {
+                currentName = line.substr(pos + 5);
+                if (!currentName.empty() && currentName.front() == '"')
+                    currentName = currentName.substr(1, currentName.size() - 2);
+            }
+        }
+        else if (line.rfind("H:", 0) == 0)
+        {
+            // Parse Handlers
+            auto pos = line.find("Handlers=");
+            if (pos != std::string::npos)
+            {
+                std::istringstream iss(line.substr(pos + 9));
+                std::string handler;
+                while (iss >> handler)
+                {
+                    if (handler.find("event") == 0)
+                    {
+                        currentEvent = "/dev/input/" + handler;
+                    }
+                }
+            }
+        }
+        else if (line.empty())
+        {
+            // End of a block → check match
+            if (!currentName.empty() && currentName == name && !currentEvent.empty())
+            {
+                return currentEvent;
+            }
+            currentName.clear();
+            currentEvent.clear();
+        }
+    }
+
+    // Check last block (in case no empty line at EOF)
+    if (!currentName.empty() && currentName == name && !currentEvent.empty())
+    {
+        return currentEvent;
+    }
+
+    return {};
+}

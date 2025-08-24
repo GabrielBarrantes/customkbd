@@ -3,9 +3,10 @@
 #include <fstream>
 #include <iostream>
 
+#include "DeviceMatcher.hpp"
+
 using json = nlohmann::json;
 
-// Helper: convert DeviceSelector to JSON
 static json selector_to_json(const DeviceSelector &s)
 {
     json j;
@@ -17,7 +18,6 @@ RuntimeConfig Config::load(const ConfigPaths &paths)
 {
     RuntimeConfig rc;
 
-    // Load selected device
     {
         std::ifstream f(paths.device_json);
         if (!f)
@@ -29,12 +29,11 @@ RuntimeConfig Config::load(const ConfigPaths &paths)
             json j;
             f >> j;
             DeviceSelector sel;
-            sel.path = j.value("path", "");
+            sel.path = DeviceMatcher::eventnode(j.value("name", ""));
             rc.selector = sel;
         }
     }
 
-    // Load mappings
     {
         std::ifstream f(paths.mappings_json);
         if (!f)

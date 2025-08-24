@@ -16,4 +16,4 @@ sudo mount --bind $(pwd)/configs /etc/customkbd
 sudo umount /etc/customkbd
 
 # Run daemon normally
-sudo ./src/customkbd-daemon
+sudo ./customkbd-daemon

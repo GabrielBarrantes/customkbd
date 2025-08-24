@@ -9,6 +9,8 @@ public:
 
     std::vector<std::string> listInputDevices() const;
 
+    static std::string eventnode(std::string const &name);
+
     // static helper
     static std::vector<std::string> enumerate()
     {

@@ -39,19 +39,18 @@ cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 sudo cmake --install build
 sudo systemctl enable customkbd.service
-sudo systemctl start customkbd.service
 ```
 
-## Usage
+## Configuration and Usage
 
-- Select device (only works if >1 keyboard present):
+- Make sure to select a device before starting the service (only works if >1 keyboard present):
 
 ```bash
 sudo customkbd list
 sudo customkbd select 1
 ```
 
-- Edit mappings at `/etc/customkbd/mappings.json`:
+- Edit mappings at `/usr/local/etc/customkbd/mappings.json`:
 
 ```json
 {
@@ -60,13 +59,12 @@ sudo customkbd select 1
 }
 ```
 
-- After editing restart the service with
+- After editing start or restart the service with
 
 ```bash
+sudo systemctl start customkbd.service
 sudo systemctl restart customkbd.service
 ```
-
-> Tip: Use explicit `_down`/`_up` for modifiers when needed.
 
 ## Security & Permissions
 

@@ -24,8 +24,8 @@ int main()
     paths.device_json = "configs/device.json";
     paths.mappings_json = "configs/mappings.json";
 #else
-    paths.device_json = "/etc/customkbd/device.json";
-    paths.mappings_json = "/etc/customkbd/mappings.json";
+    paths.device_json = "/usr/local/etc/customkbd/device.json";
+    paths.mappings_json = "/usr/local/etc/customkbd/mappings.json";
 #endif
 
     Config cfgObj;

@@ -60,10 +60,21 @@ static const std::map<std::string, int> keymap = {
     {"meta_left", KEY_LEFTMETA},
     {"meta_right", KEY_RIGHTMETA},
 
+    {"up", KEY_UP},
+    {"down", KEY_DOWN},
+    {"left", KEY_LEFT},
+    {"right", KEY_RIGHT},
+    {"home", KEY_HOME},
+    {"end", KEY_END},
+    {"pageup", KEY_PAGEUP},
+    {"pagedown", KEY_PAGEDOWN},
+    {"space", KEY_SPACE},
+
     {"grave", KEY_GRAVE},
     {"enter", KEY_ENTER},
     {"escape", KEY_ESC},
     {"tab", KEY_TAB},
+    {"capslock", KEY_CAPSLOCK},
     {"minus", KEY_MINUS},
     {"equal", KEY_EQUAL},
 
@@ -135,10 +146,21 @@ static const std::map<int, std::string> code_to_name_map = {
     {KEY_LEFTMETA, "meta_left"},
     {KEY_RIGHTMETA, "meta_right"},
 
+    {KEY_UP, "up"},
+    {KEY_DOWN, "down"},
+    {KEY_LEFT, "left"},
+    {KEY_RIGHT, "right"},
+    {KEY_HOME, "home"},
+    {KEY_END, "end"},
+    {KEY_PAGEUP, "pageup"},
+    {KEY_PAGEDOWN, "pagedown"},
+    {KEY_SPACE, "space"},
+
     {KEY_GRAVE, "grave"},
     {KEY_ENTER, "enter"},
     {KEY_ESC, "escape"},
     {KEY_TAB, "tab"},
+    {KEY_CAPSLOCK, "capslock"},
     {KEY_MINUS, "minus"},
     {KEY_EQUAL, "equal"},
 
@@ -311,6 +333,57 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
 
     for (const auto &a : actions)
     {
+        if (a.rfind("type:", 0) == 0)
+        {
+            std::string text = a.substr(5);
+            std::cout << "[DEBUG] Typing string: " << text << std::endl;
+
+            for (char ch : text)
+            {
+                // Convert character to lowercase name (e.g., 'h' -> "h")
+                std::string keyname;
+                if (ch == ' ')
+                {
+                    keyname = "space";
+                }
+                else
+                {
+                    keyname = std::string(1, std::tolower(ch));
+                }
+
+                auto it = keymap.find(keyname);
+                if (it == keymap.end())
+                {
+                    std::cout << "[WARN] No mapping for char: " << ch << std::endl;
+                    continue;
+                }
+
+                int code = it->second;
+
+                struct input_event ev{};
+                ev.type = EV_KEY;
+                ev.code = code;
+
+                // press
+                ev.value = 1;
+                write(uinputFd, &ev, sizeof(ev));
+
+                struct input_event syn{};
+                syn.type = EV_SYN;
+                syn.code = SYN_REPORT;
+                syn.value = 0;
+                write(uinputFd, &syn, sizeof(syn));
+
+                // release
+                ev.value = 0;
+                write(uinputFd, &ev, sizeof(ev));
+
+                write(uinputFd, &syn, sizeof(syn));
+            }
+
+            continue;
+        }
+
         auto it = keymap.find(a);
         if (it == keymap.end())
         {
@@ -335,6 +408,11 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
 
     for (const auto &a : actions)
     {
+        if (a.rfind("type:", 0) == 0)
+        {
+            continue;
+        }
+
         auto it = keymap.find(a);
         if (it == keymap.end())
         {

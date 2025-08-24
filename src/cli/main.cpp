@@ -10,7 +10,7 @@
 #ifdef DEBUG
 const std::string DEVICE_JSON = "configs/device.json";
 #else
-const std::string DEVICE_JSON = "/etc/customkbd/device.json";
+const std::string DEVICE_JSON = "/usr/local/etc/customkbd/device.json";
 #endif
 
 int main(int argc, char **argv)

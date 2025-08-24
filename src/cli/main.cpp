@@ -7,7 +7,11 @@
 #include <nlohmann/json.hpp>
 #include "../customkbd/InputDeviceInfo.hpp"
 
-const std::string DEVICE_JSON = "../configs/device.json";
+#ifdef DEBUG
+const std::string DEVICE_JSON = "configs/device.json";
+#else
+const std::string DEVICE_JSON = "/etc/customkbd/device.json";
+#endif
 
 int main(int argc, char **argv)
 {
@@ -59,7 +63,6 @@ int main(int argc, char **argv)
         j["name"] = dev.name;
         j["eventNode"] = devices[idx];
 
-        const std::string DEVICE_JSON = "../configs/device.json";
         std::ofstream out(DEVICE_JSON);
         if (!out.is_open())
         {

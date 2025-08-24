@@ -19,8 +19,14 @@ int main()
     Logger::instance().info(std::string("customkbd-daemon ") + customkbd::VERSION);
 
     ConfigPaths paths;
-    paths.device_json = "../configs/device.json";
-    paths.mappings_json = "../configs/mappings.json";
+
+#ifdef DEBUG
+    paths.device_json = "configs/device.json";
+    paths.mappings_json = "configs/mappings.json";
+#else
+    paths.device_json = "/etc/customkbd/device.json";
+    paths.mappings_json = "/etc/customkbd/mappings.json";
+#endif
 
     Config cfgObj;
     RuntimeConfig cfg = cfgObj.load(paths);

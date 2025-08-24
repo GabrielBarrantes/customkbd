@@ -54,8 +54,10 @@ foreach(tgt IN ITEMS customkbd-daemon customkbd)
     target_include_directories(${tgt} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 endforeach()
 
+target_compile_definitions(customkbd-daemon PRIVATE DEBUG)
+target_compile_definitions(customkbd PRIVATE DEBUG)
+
 install(TARGETS customkbd-daemon customkbd RUNTIME DESTINATION bin)
 install(FILES systemd/customkbd.service DESTINATION lib/systemd/system)
-install(FILES configs/mappings.example.json DESTINATION etc/customkbd RENAME mappings.json)
-install(FILES configs/device.example.json DESTINATION etc/customkbd RENAME device.json)
+install(FILES configs/mappings.json DESTINATION etc/customkbd RENAME mappings.json)
 install(FILES README.md DESTINATION share/doc/customkbd)

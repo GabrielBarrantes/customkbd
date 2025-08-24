@@ -1,7 +1,7 @@
 {
-  "eventNode": "/dev/input/event3",
+  "eventNode": "/dev/input/event7",
   "name": "Microsoft Wired Keyboard 600",
-  "path": "/dev/input/event3",
+  "path": "/dev/input/event7",
   "product": "07f8",
   "vendor": "045e",
   "version": "0111"

@@ -27,5 +27,4 @@ public:
     Config() = default;
 
     RuntimeConfig load(const ConfigPaths &paths);
-    void save_device(const DeviceSelector &sel, const std::string &path);
 };

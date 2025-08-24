@@ -12,7 +12,6 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBUDEV REQUIRED libudev)
 pkg_check_modules(LIBEVDEV REQUIRED libevdev)
 
-# nlohmann/json (header-only)
 include(FetchContent)
 FetchContent_Declare(
     nlohmann_json

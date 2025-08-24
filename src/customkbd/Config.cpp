@@ -7,13 +7,6 @@
 
 using json = nlohmann::json;
 
-static json selector_to_json(const DeviceSelector &s)
-{
-    json j;
-    j["path"] = s.path;
-    return j;
-}
-
 RuntimeConfig Config::load(const ConfigPaths &paths)
 {
     RuntimeConfig rc;
@@ -52,13 +45,4 @@ RuntimeConfig Config::load(const ConfigPaths &paths)
     }
 
     return rc;
-}
-
-void Config::save_device(const DeviceSelector &sel, const std::string &path)
-{
-    json j = selector_to_json(sel);
-    std::ofstream f(path);
-    if (!f)
-        throw std::runtime_error("Failed to write device selector to " + path);
-    f << j.dump(2) << std::endl;
 }

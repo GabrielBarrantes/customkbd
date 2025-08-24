@@ -50,7 +50,15 @@ int main(int argc, char **argv)
         }
 
         nlohmann::json j;
-        j["path"] = devices[idx]; // write selected device path in JSON
+
+        InputDeviceInfo dev(devices[idx]);
+
+        j["path"] = devices[idx];
+        j["vendor"] = dev.vendor;
+        j["product"] = dev.product;
+        j["version"] = dev.version;
+        j["name"] = dev.name;
+        j["eventNode"] = devices[idx];
 
         const std::string DEVICE_JSON = "../configs/device.json";
         std::ofstream out(DEVICE_JSON);
@@ -61,9 +69,9 @@ int main(int argc, char **argv)
         }
 
         out << j.dump(2) << std::endl;
-        std::cout << "Selected device: " << devices[idx] << std::endl;
+        std::cout << "Selected device: " << dev.name << std::endl;
 
-        return 0; // stop here, don’t fall through
+        return 0;
     }
 
     if (cmd == "status")
@@ -77,7 +85,7 @@ int main(int argc, char **argv)
 
         nlohmann::json j;
         in >> j;
-        std::cout << "Selected device: " << j["path"].get<std::string>() << std::endl;
+        std::cout << "Selected device: " << j["name"].get<std::string>() << std::endl;
         return 0;
     }
 

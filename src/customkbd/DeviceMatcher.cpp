@@ -5,10 +5,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <algorithm> // for std::transform
-#include <cctype>    // for ::tolower
-
-#include "InputDeviceInfo.hpp"
+#include <algorithm>
+#include <cctype>
 
 std::vector<std::string> DeviceMatcher::listInputDevices() const
 {
@@ -113,9 +111,6 @@ std::vector<std::string> DeviceMatcher::listInputDevices() const
             devices.push_back("/dev/input/" + eventNode);
         }
     }
-
-    InputDeviceInfo dev("/dev/input/event7");
-    dev.print();
 
     return devices;
 }

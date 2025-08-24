@@ -113,3 +113,9 @@ void InputDeviceInfo::print() const
     std::cout << "  Handlers: " << handlers << "\n";
     std::cout << "  Event Node: " << eventNode << "\n";
 }
+
+void InputDeviceInfo::printName() const
+{
+    std::cout << "Device name:  ";
+    std::cout << name << std::endl;
+}

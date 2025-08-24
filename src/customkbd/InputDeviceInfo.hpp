@@ -21,6 +21,7 @@ public:
 
     // Print method
     void print() const;
+    void printName() const;
 
 private:
     void parseDeviceBlock(const std::string &deviceBlock);

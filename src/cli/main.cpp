@@ -5,6 +5,7 @@
 #include <vector>
 #include "../customkbd/DeviceMatcher.hpp"
 #include <nlohmann/json.hpp>
+#include "../customkbd/InputDeviceInfo.hpp"
 
 const std::string DEVICE_JSON = "../configs/device.json";
 
@@ -26,7 +27,9 @@ int main(int argc, char **argv)
         int idx = 0;
         for (const auto &d : devices)
         {
-            std::cout << std::setw(2) << idx++ << ": " << d << std::endl;
+            InputDeviceInfo dev(d);
+
+            std::cout << std::setw(2) << idx++ << ": " << dev.name << std::endl;
         }
         return 0;
     }

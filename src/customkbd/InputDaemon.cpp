@@ -43,7 +43,6 @@ InputDaemon::~InputDaemon()
 
 bool InputDaemon::init()
 {
-    // Open the input device
     fd = open(devicePath.c_str(), O_RDONLY | O_NONBLOCK);
     if (fd < 0)
     {
@@ -51,7 +50,6 @@ bool InputDaemon::init()
         return false;
     }
 
-    // Grab the device exclusively (prevents OS from seeing keys)
     if (ioctl(fd, EVIOCGRAB, 1) < 0)
     {
         std::cerr << "[ERROR] Failed to grab device exclusively: " << devicePath << std::endl;
@@ -60,23 +58,22 @@ bool InputDaemon::init()
         return false;
     }
 
-    // Open uinput for sending virtual keys
     uinputFd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (uinputFd < 0)
     {
         std::cerr << "[ERROR] Failed to open /dev/uinput" << std::endl;
-        ioctl(fd, EVIOCGRAB, 0); // release grab
+        ioctl(fd, EVIOCGRAB, 0);
         close(fd);
         fd = -1;
         return false;
     }
 
-    // Enable key events and set key codes
     ioctl(uinputFd, UI_SET_EVBIT, EV_KEY);
     for (auto const &[name, code] : keymap)
+    {
         ioctl(uinputFd, UI_SET_KEYBIT, code);
+    }
 
-    // Create uinput device
     struct uinput_user_dev uidev{};
     memset(&uidev, 0, sizeof(uidev));
     strncpy(uidev.name, "customkbd", UINPUT_MAX_NAME_SIZE);
@@ -111,18 +108,17 @@ void InputDaemon::run()
 
         auto now = std::chrono::steady_clock::now();
 
-        // Check cooldown
         auto it_last = lastProcessed.find(ev.code);
         if (it_last != lastProcessed.end())
         {
             if (now - it_last->second < cooldown)
             {
                 std::cout << "[DEBUG] Skipping duplicate key: " << ev.code << std::endl;
-                continue; // skip this repeated event
+                continue;
             }
         }
 
-        lastProcessed[ev.code] = now; // update last processed time
+        lastProcessed[ev.code] = now;
 
         std::string keyName;
         auto it_name = code_to_name_map.find(ev.code);
@@ -140,7 +136,7 @@ void InputDaemon::run()
             {
                 std::cout << "[DEBUG] Mapped key pressed: " << keyName << std::endl;
                 emitMapped(it_map->second);
-                continue; // suppress original key
+                continue;
             }
         }
 

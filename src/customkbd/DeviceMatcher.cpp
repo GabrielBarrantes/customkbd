@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cctype>
 
-std::vector<std::string> DeviceMatcher::listInputDevices() const
+std::vector<std::string> DeviceMatcher::listInputDevices()
 {
     std::ifstream infile("/proc/bus/input/devices");
     if (!infile)

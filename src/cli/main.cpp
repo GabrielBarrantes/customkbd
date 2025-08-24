@@ -19,8 +19,7 @@ int main(int argc, char **argv)
 
     std::string cmd = argv[1];
 
-    DeviceMatcher matcher;
-    auto devices = matcher.listInputDevices();
+    auto devices = DeviceMatcher::listInputDevices();
 
     if (cmd == "list")
     {

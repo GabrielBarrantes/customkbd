@@ -7,16 +7,8 @@ class DeviceMatcher
 public:
     DeviceMatcher() = default;
 
-    std::vector<std::string> listInputDevices() const;
-
+    static std::vector<std::string> listInputDevices();
     static std::string eventnode(std::string const &name);
-
-    // static helper
-    static std::vector<std::string> enumerate()
-    {
-        DeviceMatcher matcher;
-        return matcher.listInputDevices();
-    }
 
 private:
 };

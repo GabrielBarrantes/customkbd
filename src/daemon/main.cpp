@@ -2,7 +2,6 @@
 #include "customkbd/InputDaemon.hpp"
 #include "customkbd/Logger.hpp"
 #include "customkbd/DeviceMatcher.hpp"
-#include "customkbd/Keymap.hpp"
 #include "customkbd/UInput.hpp"
 #include "customkbd/Util.hpp"
 #include "customkbd/version.hpp"

@@ -6,19 +6,19 @@
 
 struct DeviceSelector
 {
-    std::string path; // path to the selected keyboard device
+    std::string path;
 };
 
 struct RuntimeConfig
 {
-    DeviceSelector selector;                                  // selected device
-    std::map<std::string, std::vector<std::string>> mappings; // shortcut mappings
+    DeviceSelector selector;
+    std::map<std::string, std::vector<std::string>> mappings;
 };
 
 struct ConfigPaths
 {
-    std::string device_json;   // path to device.json
-    std::string mappings_json; // path to mappings.json
+    std::string device_json;
+    std::string mappings_json;
 };
 
 class Config

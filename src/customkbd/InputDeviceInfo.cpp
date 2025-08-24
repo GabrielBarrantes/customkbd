@@ -17,14 +17,12 @@ InputDeviceInfo::InputDeviceInfo(const std::string &devicePath)
     std::string block;
     bool found = false;
 
-    // Read the file block by block
     while (std::getline(infile, line))
     {
         if (line.empty())
         {
             if (!block.empty())
             {
-                // Check if this block contains the event node we want
                 if (block.find(devicePath.substr(devicePath.find_last_of('/') + 1)) != std::string::npos)
                 {
                     parseDeviceBlock(block);
@@ -38,7 +36,6 @@ InputDeviceInfo::InputDeviceInfo(const std::string &devicePath)
         block += line + "\n";
     }
 
-    // Check last block if file does not end with empty line
     if (!found && !block.empty())
     {
         if (block.find(devicePath.substr(devicePath.find_last_of('/') + 1)) != std::string::npos)
@@ -62,7 +59,7 @@ void InputDeviceInfo::parseDeviceBlock(const std::string &deviceBlock)
         {
             std::istringstream iss(line);
             std::string tmp;
-            iss >> tmp; // I:
+            iss >> tmp;
             iss >> tmp;
             bus = tmp.substr(tmp.find("=") + 1);
             iss >> tmp;

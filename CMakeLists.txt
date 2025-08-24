@@ -25,7 +25,6 @@ add_library(customkbd_core
     src/customkbd/DeviceMatcher.cpp
     src/customkbd/InputDeviceInfo.cpp
     src/customkbd/InputDaemon.cpp
-    src/customkbd/Keymap.cpp
     src/customkbd/Logger.cpp
     src/customkbd/UInput.cpp
 )

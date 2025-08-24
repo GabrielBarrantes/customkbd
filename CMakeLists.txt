@@ -26,7 +26,6 @@ add_library(customkbd_core
     src/customkbd/InputDeviceInfo.cpp
     src/customkbd/InputDaemon.cpp
     src/customkbd/Logger.cpp
-    src/customkbd/UInput.cpp
 )
 
 target_include_directories(customkbd_core

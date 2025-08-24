@@ -7,21 +7,33 @@ A C++17 daemon that remaps a dedicated second keyboard on Linux. It identifies t
 Dependencies: `libevdev`, `libudev`, CMake >= 3.15, a C++17 compiler.
 
 ```bash
-sudo apt-get install -y libevdev-dev libudev-dev cmake g++
+sudo apt install -y libevdev-dev libudev-dev cmake g++
+```
+
+## Build and run development enviroment
+
+```bash
 mkdir build && cd build
 cmake ..
 make -j
+sudo ./customkbd list
+sudo ./customkbd status
+sudo ./customkbd select 1
+sudo ./customkbd-daemon
 ```
 
-## Install
+## Build and install
 
 ```bash
+mkdir build && cd build
+cmake ..
+make -j
 sudo make install
 sudo systemctl enable customkbd.service
 sudo systemctl start customkbd.service
 ```
 
-## Configure
+## Usage
 
 - Select device (only works if >1 keyboard present):
 
@@ -30,15 +42,19 @@ sudo customkbd list
 sudo customkbd select 1
 ```
 
-This stores `/etc/customkbd/device.json` with a robust selector snapshot.
-
-- Edit mappings at `/etc/customkbd/mappings.json`:
+Edit mappings at `/etc/customkbd/mappings.json`:
 
 ```json
 {
   "z": ["ctrl_down", "c", "ctrl_up"],
   "x": ["ctrl_down", "v", "ctrl_up"]
 }
+```
+
+After editing restar the service with
+
+```bash
+sudo systemctl start customkbd.service
 ```
 
 > Tip: Use explicit `_down`/`_up` for modifiers when needed.
@@ -51,4 +67,4 @@ The daemon needs read access to `/dev/input/event*` and write to `/dev/uinput`. 
 
 - If the previously used keyboard is not present at boot, the daemon idles and does nothing.
 - The CLI only allows selecting a device when more than one keyboard is detected.
-- Matching prefers `/dev/input/by-id` symlink names which stay stable across reboots; when not available, a score-based fallback reduces false matches.
+- For now hot plug detect is not supported, when a new keyboard is plugged list, select and restart the service.

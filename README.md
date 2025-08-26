@@ -54,9 +54,11 @@ sudo customkbd select 1
 
 ```json
 {
-  "z": ["ctrl_down", "c", "ctrl_up"],
-  "x": ["ctrl_down", "v", "ctrl_up"],
-  "space": ["type:git status", "enter"]
+  "z": [["ctrl_down", "c"]],
+  "x": [["ctrl_down", "v"]],
+  "alt_left": [["meta_left", "equal"]],
+  "meta_left": [["up"], ["enter"]],
+  "space": [["ctrl_left", "x"], ["y"], ["enter"]]
 }
 ```
 

@@ -12,7 +12,7 @@ struct DeviceSelector
 struct RuntimeConfig
 {
     DeviceSelector selector;
-    std::map<std::string, std::vector<std::string>> mappings;
+    std::map<std::string, std::vector<std::vector<std::string>>> mappings;
 };
 
 struct ConfigPaths
@@ -26,5 +26,5 @@ class Config
 public:
     Config() = default;
 
-    RuntimeConfig load(const ConfigPaths &paths);
+    RuntimeConfig load_complete(const ConfigPaths &paths);
 };

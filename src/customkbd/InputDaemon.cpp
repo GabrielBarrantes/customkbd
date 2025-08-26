@@ -189,9 +189,9 @@ static const std::map<int, std::string> code_to_name_map = {
     // escape
     {KEY_ESC, "esc"}};
 
-InputDaemon::InputDaemon(const std::string &devicePath_,
-                         const std::map<std::string, std::vector<std::string>> &mappings_)
-    : devicePath(devicePath_), mappings(mappings_)
+InputDaemon::InputDaemon(const std::string &devicePath,
+                         const std::map<std::string, std::vector<std::vector<std::string>>> &mappings)
+    : devicePath(std::move(devicePath)), mappings(std::move(mappings))
 {
 }
 
@@ -301,7 +301,7 @@ void InputDaemon::run()
             if (it_map != mappings.end())
             {
                 std::cout << "[DEBUG] Mapped key pressed: " << keyName << std::endl;
-                emitMapped(it_map->second);
+                emitMappedComplete(it_map->second);
                 continue;
             }
 
@@ -435,5 +435,13 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
         write(uinputFd, &ev, sizeof(ev));
         std::cout << "[DEBUG] Releasing key: " << a << std::endl;
         // std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+}
+
+void InputDaemon::emitMappedComplete(const std::vector<std::vector<std::string>> &commands)
+{
+    for (auto command : commands)
+    {
+        emitMapped(command);
     }
 }

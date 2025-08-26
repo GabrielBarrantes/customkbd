@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-RuntimeConfig Config::load(const ConfigPaths &paths)
+RuntimeConfig Config::load_complete(const ConfigPaths &paths)
 {
     RuntimeConfig rc;
 
@@ -39,7 +39,7 @@ RuntimeConfig Config::load(const ConfigPaths &paths)
             f >> j;
             for (auto &[k, v] : j.items())
             {
-                rc.mappings[k] = v.get<std::vector<std::string>>();
+                rc.mappings[k] = v.get<std::vector<std::vector<std::string>>>();
             }
         }
     }

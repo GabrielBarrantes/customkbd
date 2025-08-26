@@ -29,9 +29,9 @@ int main()
 #endif
 
     Config cfgObj;
-    RuntimeConfig cfg = cfgObj.load(paths);
+    RuntimeConfig cfg = cfgObj.load_complete(paths);
 
-    InputDaemon daemon(cfg.selector.path, cfg.mappings);
+    InputDaemon daemon(std::move(cfg.selector.path), std::move(cfg.mappings));
 
     if (!daemon.init())
     {

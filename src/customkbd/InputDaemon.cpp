@@ -304,6 +304,11 @@ void InputDaemon::run()
                 emitMappedComplete(it_map->second);
                 continue;
             }
+            else
+            {
+                std::cout << "[DEBUG] Forwarding Event: " << keyName << std::endl;
+                forwardEvent(ev);
+            }
 
             continue;
         }

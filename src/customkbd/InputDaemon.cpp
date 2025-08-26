@@ -69,6 +69,9 @@ static const std::map<std::string, int> keymap = {
     {"pageup", KEY_PAGEUP},
     {"pagedown", KEY_PAGEDOWN},
     {"space", KEY_SPACE},
+    {".", KEY_DOT},
+    {",", KEY_COMMA},
+    {";", KEY_SEMICOLON},
 
     {"grave", KEY_GRAVE},
     {"enter", KEY_ENTER},
@@ -76,6 +79,7 @@ static const std::map<std::string, int> keymap = {
     {"tab", KEY_TAB},
     {"capslock", KEY_CAPSLOCK},
     {"minus", KEY_MINUS},
+    {"-", KEY_MINUS},
     {"equal", KEY_EQUAL},
 
     // function keys
@@ -155,6 +159,9 @@ static const std::map<int, std::string> code_to_name_map = {
     {KEY_PAGEUP, "pageup"},
     {KEY_PAGEDOWN, "pagedown"},
     {KEY_SPACE, "space"},
+    {KEY_DOT, "."},
+    {KEY_COMMA, ","},
+    {KEY_SEMICOLON, ";"},
 
     {KEY_GRAVE, "grave"},
     {KEY_ENTER, "enter"},
@@ -162,6 +169,7 @@ static const std::map<int, std::string> code_to_name_map = {
     {KEY_TAB, "tab"},
     {KEY_CAPSLOCK, "capslock"},
     {KEY_MINUS, "minus"},
+    {KEY_MINUS, "-"},
     {KEY_EQUAL, "equal"},
 
     // function keys

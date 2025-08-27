@@ -1,0 +1,42 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build-type: [Debug, Release]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            libevdev-dev \
+            libudev-dev \
+            cmake \
+            g++ \
+            build-essential \
+
+      - name: Configure CMake - ${{ matrix.build-type }}
+        run: cmake -B ${{ github.workspace }}/build-${{ matrix.build-type }} -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+
+      - name: Build project - ${{ matrix.build-type }}
+        run: cmake --build ${{ github.workspace }}/build-${{ matrix.build-type }} --config ${{ matrix.build-type }} --parallel $(nproc)
+
+      - name: Upload build artifacts (on master branch)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.build-type }}-output
+          path: ${{ github.workspace }}/build-${{ matrix.build-type }}/
+          retention-days: 1

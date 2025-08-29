@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <chrono>
 
-static const std::map<std::string, int> keymap = {
+static const std::map<std::string, unsigned short> keymap = {
     // letters
     {"a", KEY_A},
     {"b", KEY_B},
@@ -99,7 +99,7 @@ static const std::map<std::string, int> keymap = {
     // escape
     {"esc", KEY_ESC}};
 
-static const std::map<int, std::string> code_to_name_map = {
+static const std::map<unsigned short, std::string> code_to_name_map = {
     // letters
     {KEY_A, "a"},
     {KEY_B, "b"},
@@ -342,8 +342,6 @@ void InputDaemon::forwardEvent(const struct input_event &ev)
 
 void InputDaemon::emitMapped(const std::vector<std::string> &actions)
 {
-    bool ctrl_pressed = false;
-
     for (const auto &a : actions)
     {
         if (a.rfind("type:", 0) == 0)
@@ -361,7 +359,7 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
                 }
                 else
                 {
-                    keyname = std::string(1, std::tolower(ch));
+                    keyname = std::string(1, static_cast<unsigned char>(std::tolower(ch)));
                 }
 
                 auto it = keymap.find(keyname);
@@ -371,7 +369,7 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
                     continue;
                 }
 
-                int code = it->second;
+                unsigned short code = it->second;
 
                 struct input_event ev{};
                 ev.type = EV_KEY;

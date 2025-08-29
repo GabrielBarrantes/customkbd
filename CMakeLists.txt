@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(Tooling)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBUDEV REQUIRED libudev)
@@ -27,6 +26,8 @@ add_library(customkbd_core
     src/customkbd/InputDaemon.cpp
     src/customkbd/Logger.cpp
 )
+
+target_compile_options(customkbd_core PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Werror)
 
 target_include_directories(customkbd_core
     PUBLIC
@@ -52,6 +53,7 @@ add_executable(customkbd src/cli/main.cpp)
 foreach(tgt IN ITEMS customkbd-daemon customkbd)
     target_link_libraries(${tgt} PRIVATE customkbd_core)
     target_include_directories(${tgt} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    target_compile_options(${tgt} PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Werror)
 endforeach()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")

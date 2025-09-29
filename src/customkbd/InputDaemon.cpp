@@ -5,9 +5,7 @@
 #include <cstring>
 #include <iostream>
 #include <thread>
-#include <chrono>
 #include <unordered_map>
-#include <chrono>
 
 static const std::map<std::string, int> keymap = {
     // letters
@@ -259,10 +257,6 @@ void InputDaemon::run()
     running = true;
     struct input_event ev;
 
-    // map key code -> last processed time
-    std::unordered_map<int, std::chrono::steady_clock::time_point> lastProcessed;
-    constexpr auto cooldown = std::chrono::milliseconds(20); // 20ms debounce
-
     while (running)
     {
         ssize_t n = read(fd, &ev, sizeof(ev));
@@ -270,20 +264,6 @@ void InputDaemon::run()
             continue;
         if (ev.type != EV_KEY)
             continue;
-
-        auto now = std::chrono::steady_clock::now();
-
-        auto it_last = lastProcessed.find(ev.code);
-        if (it_last != lastProcessed.end())
-        {
-            if (now - it_last->second < cooldown)
-            {
-                std::cout << "[DEBUG] Skipping duplicate key: " << ev.code << std::endl;
-                continue;
-            }
-        }
-
-        lastProcessed[ev.code] = now;
 
         std::string keyName;
         auto it_name = code_to_name_map.find(ev.code);
@@ -410,7 +390,6 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
         ev.value = 1;
         write(uinputFd, &ev, sizeof(ev));
         std::cout << "[DEBUG] Pressing key: " << a << std::endl;
-        // std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     struct input_event syn{};
@@ -439,7 +418,6 @@ void InputDaemon::emitMapped(const std::vector<std::string> &actions)
         ev.value = 0;
         write(uinputFd, &ev, sizeof(ev));
         std::cout << "[DEBUG] Releasing key: " << a << std::endl;
-        // std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
 

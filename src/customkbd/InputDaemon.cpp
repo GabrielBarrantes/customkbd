@@ -208,7 +208,7 @@ InputDaemon::~InputDaemon()
 
 bool InputDaemon::init()
 {
-    fd = open(devicePath.c_str(), O_RDONLY | O_NONBLOCK);
+    fd = open(devicePath.c_str(), O_RDONLY);
     if (fd < 0)
     {
         std::cerr << "[ERROR] Failed to open device: " << devicePath << std::endl;

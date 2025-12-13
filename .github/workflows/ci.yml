@@ -25,7 +25,9 @@ jobs:
             libudev-dev \
             cmake \
             g++ \
-            build-essential \
+            build-essential
+          free -h
+          lscpu
 
       - name: Configure CMake - ${{ matrix.build-type }}
         run: cmake -B ${{ github.workspace }}/build-${{ matrix.build-type }} -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}

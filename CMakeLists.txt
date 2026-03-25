@@ -12,13 +12,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBUDEV REQUIRED libudev)
 pkg_check_modules(LIBEVDEV REQUIRED libevdev)
 
-include(FetchContent)
-FetchContent_Declare(
-    nlohmann_json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.11.3
-)
-FetchContent_MakeAvailable(nlohmann_json)
+find_package(nlohmann_json REQUIRED)
 
 add_library(customkbd_core
     src/customkbd/Config.cpp

@@ -6,11 +6,11 @@ A C++17 daemon that remaps a dedicated second keyboard on Linux. It identifies t
 
 ### Dependencies
 
-Install `libevdev`, `libudev`, CMake >= 3.15, a C++17 compiler.
+Install `libevdev`, `libudev`, `nlohmann-json3-dev`, CMake >= 3.15, a C++17 compiler.
 
 ```bash
 sudo apt update
-sudo apt install -y libevdev-dev libudev-dev cmake g++
+sudo apt install -y libevdev-dev libudev-dev nlohmann-json3-dev cmake g++
 ```
 
 ### Build and run development enviroment
